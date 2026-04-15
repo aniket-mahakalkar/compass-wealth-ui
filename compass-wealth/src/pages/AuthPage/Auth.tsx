@@ -5,8 +5,7 @@ import {
   User as UserIcon, 
   ArrowRight, 
   Compass,
-  AlertCircle,
-  icons
+  AlertCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

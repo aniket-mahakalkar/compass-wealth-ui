@@ -1,22 +1,39 @@
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import Auth from "./pages/AuthPage/Auth";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import RouteGuard from "./routes/RouteGuard";
-import Unauthorized from "./pages/Unauthorized/Unauthorized";
-import AdminUsers from "./pages/AdminUsers/AdminUsers";
+import MainLayout from "./components/MainLayout/MainLayout";
+import { AllRoutes, type AppRoute } from "./routes/allRoutes";
+import type { AppPermission } from "./types/auth";
+
+type ProtectedRoute = AppRoute & { permission: AppPermission; useMainLayout: true };
 
 function App() {
+  const publicRoutes = AllRoutes.filter(
+    (route) => route.permission === "public" && !route.useMainLayout,
+  );
+  const protectedRoutes = AllRoutes.filter(
+    (route): route is ProtectedRoute =>
+      route.permission !== "public" && route.useMainLayout === true,
+  );
+
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<Auth />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route element={<RouteGuard requiredPermission="route:dashboard" />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-        <Route element={<RouteGuard requiredPermission="route:admin" />}>
-          <Route path="/admin/users" element={<AdminUsers />} />
+        {publicRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={<route.component />} />
+        ))}
+
+        <Route element={<RouteGuard />}>
+          <Route element={<MainLayout />}>
+            {protectedRoutes.map((route) => (
+              <Route
+                key={route.path}
+                element={<RouteGuard requiredPermission={route.permission} />}
+              >
+                <Route path={route.path} element={<route.component />} />
+              </Route>
+            ))}
+          </Route>
         </Route>
       </Routes>
     </AuthProvider>
