@@ -5,8 +5,7 @@ import {
   User as UserIcon, 
   ArrowRight, 
   Compass,
-  AlertCircle,
-  icons
+  AlertCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +34,7 @@ const Auth = () => {
     }, [isAuthenticated, navigate]);
 
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         setError(null);

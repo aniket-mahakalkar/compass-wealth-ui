@@ -3,7 +3,7 @@ import type { AppPermission } from "@/types/auth";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface RouteGuardProps {
-  requiredPermission: AppPermission;
+  requiredPermission?: AppPermission;
 }
 
 const RouteGuard = ({ requiredPermission }: RouteGuardProps) => {
@@ -14,7 +14,7 @@ const RouteGuard = ({ requiredPermission }: RouteGuardProps) => {
     return <Navigate to="/" replace state={{ from: location }} />;
   }
 
-  if (!hasPermission(requiredPermission)) {
+  if (requiredPermission && !hasPermission(requiredPermission)) {
     return <Navigate to="/unauthorized" replace />;
   }
 
