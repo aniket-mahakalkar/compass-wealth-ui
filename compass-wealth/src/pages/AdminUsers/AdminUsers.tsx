@@ -25,7 +25,7 @@ const AdminUsers = () => {
       setUsersLoading(true);
       setUsersError(null);
       try {
-        const allUsers = await authApi.getUsers(token);
+        const allUsers = await authApi.getUsers();
         setUsers(allUsers);
         setSelectedRoles(
           allUsers.reduce<Record<number, Role>>((acc, currentUser) => {
@@ -59,7 +59,7 @@ const AdminUsers = () => {
     try {
       setUpdatingRoleUserId(targetUserId);
       setUsersError(null);
-      await authApi.updateUserRole(token, targetUserId, { role });
+      await authApi.updateUserRole(targetUserId, { role });
       setUsers((currentUsers) =>
         currentUsers.map((existingUser) =>
           existingUser.id === targetUserId ? { ...existingUser, role } : existingUser,
