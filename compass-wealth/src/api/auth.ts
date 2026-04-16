@@ -32,11 +32,6 @@ export const authApi = {
     return result;
   },
 
-  getUsers: async (): Promise<AccountResponseDto[]> => {
-    const result = await request.get<ApiResponse<AccountResponseDto[]>>("/api/v1/users");
-    return result.data;
-  },
-
   updateUserRole: async (
     userId: number,
     payload: UpdateUserRoleRequestDto,
